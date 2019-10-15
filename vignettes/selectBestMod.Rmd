@@ -1,0 +1,62 @@
+---
+title: "Select the Best Model"
+vignette: >
+  %\VignetteIndexEntry{Select the Best Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes  
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+We provide a wrapper function, `fitOneExp()`, incorporating outlier detection, fitting multiple models, selecting the best model and estimating IC values. 
+
+Users can specify multiple models from the **drc** and **DoseFinding** packages using the *models* parameter. An example is shown below.
+
+```{r, eval=TRUE}
+library(drexplorer2)
+data(ryegrass)
+
+fitExp <- fitOneExp(ryegrass[, c(2, 1)],
+                    drug = '', cellLine = '', unit = '',
+                    models=c('sigEmax', 'LL.4', 'LL.5', 'LL.3', 'LL.3u', 'logistic'),
+                    alpha = 0.05, interpolation = TRUE)
+```
+
+The fitted models can be compared through the plotOneExp function as below:
+
+```{r, warning=FALSE, fig.height=6, fig.width=6, dev='png', dpi=72*10, fig.align='center'}
+plotOneExp(fitExp, main = 'Dose-Response Curves from Multiple Models')
+
+```
+
+The best model based on Residual Standard Error (RSE) can be obtained as shown below.
+
+```{r}
+## This is the bast model:
+bM <- fitExp$bestModel
+bM
+
+## RSE from all models fitted:
+fitExp$RSEs
+
+## IC50 from all models fitted:
+fitExp$IC50
+
+## best model fitted:
+fitExp$fit[[bM]]@fit
+```
+
+
+
+

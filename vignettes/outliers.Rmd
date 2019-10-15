@@ -1,0 +1,52 @@
+---
+title: "Outlier Identification"
+vignette: >
+  %\VignetteIndexEntry{0A_Outlier Identification}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes  
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+
+This package implements the method by Newman, D. The test statistic q=w/s where w is the range of the data and s is sample standard deviation estimated from controls. The null distribution for q has been derived and 1% and 5% quantiles have been given in the paper.
+
+We implement this procedure. In particular, `NewmanTest()` returns a logic vector specifying whether the observations are outliers.
+
+Usually, drug-response data contains multiple doses. Therefore, we write a wrapper `drOutlier()` that compute the result for all doses one dose at a time.
+
+We use the *ryegrass* data from **drc** package for illustration purpose. The *ryegrass* data was originally published by [(Streibig et al. 2002)](#Streibig2002ryegrass) which contains 24 concentrations of ferulic acid (a root growth inhibitor) and corresponding root length. 
+
+First, we load the **drexplorer** package and attach the \Rpackage{ryegrass} data.
+
+```{r, message = FALSE}
+library(drexplorer2)
+
+data(ryegrass)
+dose <- ryegrass[, 2]
+response <- ryegrass[, 1]
+```
+
+At dose=3.75 and significance level 0.05, we find there is one outlier identified:
+
+```{r}
+## potential outlier at dose 3.75
+NewmanTest(ref = response[dose == 0], obs = response[dose == 3.75], alpha  =0.05)
+```
+
+We also examine all dose levels and find no further outliers:
+
+```{r}
+drOutlier(drMat = ryegrass[, c(2, 1)], alpha = 0.05)
+```

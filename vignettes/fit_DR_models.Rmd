@@ -1,0 +1,78 @@
+---
+title: "Fit Dose-Response Models"
+vignette: >
+  %\VignetteIndexEntry{Fit Dose-Response Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes  
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+
+Below we show how to fit a dose-response model. The `drFit()` function is a wrapper to the **drc** and **DoseFinding** packages. Therefore, all models implemented by either package can be fitted. A model is specified by a _modelName_ to be passed to this function.
+
+Outliers can be identified and removed from model fitting by specifying the parameter alpha (either at significance level of 0.01 or 0.05). To disable outlier identification, set _alpha=1_.
+
+To remove controls (responses at dose=0) during model fitting, we can set _fitCtr=FALSE_.
+
+Note that the responses are scaled by mean response at dose=0 before model fitting. 
+
+Below we fit a sigmaEmax model. We set _alpha=1_ to disable outlier removal and _fitCtr=FALSE_ to exclude controls.
+
+```{r}
+library(drexplorer2)
+
+fit_sigEmax_alpha1 <- drFit(drMat = ryegrass[, c(2, 1)],
+                            modelName = "sigEmax",
+                            alpha = 1, fitCtr = FALSE)
+```
+
+The result is slightly different when outliers passing significance level of 0.05 is removed.
+
+```{r}
+fit_sigEmax_alpha_o5 <- drFit(drMat = ryegrass[, c(2, 1)],
+                              modelName = "sigEmax", 
+                              alpha = 0.05, fitCtr = FALSE)
+fit_sigEmax_alpha1@fit
+fit_sigEmax_alpha_o5@fit
+```
+
+## Predict response
+
+One a model is fitted, it can be used to make predictions.
+
+Below we make predictions at the observed dose levels with a previously fitted model. Since the responses are scaled by mean response at dose=0 in model fitting, the predicted responses are also scaled by the mean response from controls. By default, the predict function makes predictions at observed doses.
+
+```{r}
+y <- predict(fit_sigEmax_alpha_o5)
+y
+```
+
+## Obtain IC values
+
+We implement two approaches for IC value computation. One is to interpolate the observed dosages and try to use the dose that has the predicted response closest to the specified percentile of IC value. 
+
+The second approach is to use root finding by setting the fitted model to equal to the specified percentile. In most cases, the result are similar. However, the latter approach may give IC50 values beyond observed dosages and sometimes not robust. Further, a specified IC might be not achievable for the fitted model, in which case the returned dose is either -Inf (a flagger for percentile being too small to be achieved) or Inf (a flagger for percentile being too large to be achieved). The `computeIC()` function implements both approaches. By setting _interpolation=TRUE_ (the default value) in the `computeIC()` function, the interpolation approach will be selected.   
+
+Computing IC values at different quantiles is also easy. Similar to the `drFit()` function, different models as well as other options (alpha and fitCtr) can be specified in estimating IC value. 
+
+Below we estimate IC50 at different percentiles with the sigmoid Emax model with outlier removal (alpha=0.05) fitted previously. We see that estimates from interpolation and prediction (may be extrapolated) by the model are quite similar except for IC0 and IC100. IC100 from prediction is Inf since the fitted model cannot achieve 100% killing effect (see figure below). IC100 from interpolation is the maximum dose (30 in this case) which is a truncated estimate.
+
+Similarly, since IC0 is not achievable within the observed dose, the prediction estimate of 0.86 is smaller than the minimum dose (0.94). The predicted IC value has advantage over interpolated IC value in the sense that it is not truncated. However, since the value might be extrapolated (estimate being outside of observed dose range), the estimate is more variable. 
+
+
+```{r}
+computeIC(fit_sigEmax_alpha_o5, percent=seq(0, 1, by=0.1), log.d=FALSE, interpolation=TRUE)
+computeIC(fit_sigEmax_alpha_o5, percent=seq(0, 1, by=0.1), log.d=FALSE, interpolation=FALSE)
+```

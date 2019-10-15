@@ -1,0 +1,41 @@
+---
+title: "Fit Hill Equation"
+vignette: >
+  %\VignetteIndexEntry{Fit Hill Equation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes  
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+The Hill equation is a special dose-response model. Below we demonstrate how to specifically fit this model by `hillFit()` function.
+
+We first prepare standardized data where the response is scaled to between 0 and 1. A generic plot function is implemented for the fitted object.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=72*10, fig.align='center'}
+library(drexplorer2)
+data(ryegrass)
+
+## prepare standardized data
+sdat <- prepDRdat(drMat = ryegrass[, c(2, 1)],
+                  alpha = 0.01, fitCtr = FALSE, standardize = TRUE)$dat
+
+## fit Hill equation
+fit_hill <- hillFit(d = sdat$dose, y = sdat$response)
+
+plot(fit_hill)
+fit_hill[1:length(fit_hill)]
+```
+
+

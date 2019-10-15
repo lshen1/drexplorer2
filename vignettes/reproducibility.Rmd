@@ -1,0 +1,39 @@
+---
+title: "Assessing Reproducibility"
+vignette: >
+  %\VignetteIndexEntry{0B_Assessing Reproducibility}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+Sometimes replicated viability assays are performed. In such case, it is useful to examine if the experiments are reproducible.
+
+A good metric is the **Concordance Correlation Coefficient (CCC)** that captures both the location shift as well as scale shift between the replicates. The `plotCCC` function can be used to compute CCC and visualize the replicated data.
+ 
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=96*10, fig.align='center'}
+library(drexplorer2)
+
+set.seed(100)
+r1 <- runif(28)
+r2 <- r1+rnorm(28, 0, 0.1)
+ccc <- plotCCC(r1, r2,
+               xlab = 'Simulated response, replicate 1',
+               ylab = 'Simulated response, replicate 2')
+ccc
+``` 
+
+Here we have simulated two response vectors and calculate CCC. The computed CCC value is `r round(ccc['ccc'], 3)`, location shift is `r round(ccc['l_shift'], 3)`, scale shift is `r round(ccc['s_shift'], 3)`, Pearson correlation is `r round(ccc['corr'], 3)`. 

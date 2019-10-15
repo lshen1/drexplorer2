@@ -1,0 +1,45 @@
+---
+title: "Fit NCI60 Method"
+vignette: >
+  %\VignetteIndexEntry{Fit NCI60 Method}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes  
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+The NCI60 method deals with data that contains information for day 0 treatment. The response is between -1 and 1 and thus quite different from the previous analysis.
+
+![](../man/figures/aoc.png)
+
+Below we show how to fit models to estimate GI50, LC50, TGI, AOC_GR, AOC_LD, and AUC_GRI. Similarly, the fitted object can be visualized with a generic plot function.
+
+> Notice that the parameter estimates for GI50, LC50 and TGI are based on original drug concentration, not log10 based. On the other hand, the calculation for area under/over curve of AOC_GR, AOC_LD, and AUC_GRI are based on log10 scale.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=72*10, fig.align='center'}
+library(drexplorer2)
+data(datNCI60)
+
+fit_nci60 <- nci60Fit(d = datNCI60$Dose, y = datNCI60$Growth/100)
+
+plot(fit_nci60)
+fit_nci60[1:length(fit_nci60)]
+```
+
+
+
+
+
+
+

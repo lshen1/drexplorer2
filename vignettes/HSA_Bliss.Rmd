@@ -1,0 +1,61 @@
+---
+title: "Fit HSA and Bliss Model"
+vignette: >
+  %\VignetteIndexEntry{Fit HSA and Bliss Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes  
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+
+Below we illustrate the application of HSA (Highest Single Agent) model and Bliss independence model. Both models first estimate the reference response of combination treatment (assumed to be theoretical additive effect) and then compare the observed response to the reference response for combination treatment. We compute the Area Under Curve (AUC) for the observed response and reference response and use their difference deltaAUC (AUC of observed response - AUC of reference response) to quantify the trend of synergism.
+
+In terms of showing the curves of single and combination treatment, we use the projected dose which is
+$$d_{proj}=\sqrt{(d1^2 + d2^2)}$$
+
+Based on the $d_{proj}$ dose of combination treatment, one can infer the corresponding dose of drug 1 (d1) and drug 2 (d2). That is, there is 1-to-1 correspondence among the 3 doses.
+
+```{r, fig.height=5, fig.width=6.5, dev='png', dpi=72*10, fig.align='center', warning=FALSE}
+library(drexplorer2)
+data(UMSCC22B)
+
+## fit HSA_Bliss model
+fit_hsa_bliss <- fitHSA_ray(d1 = UMSCC22B$dose1, d2 = UMSCC22B$dose2, e = UMSCC22B$e,
+                            name1 = 'SCH66336', name2 = '4HPR', islogd = FALSE)
+
+## plot deltaAUC_HSA
+plotHSA_ray(fit_hsa_bliss, type = c('line', 'HSA', 'se'),
+            main = sprintf('Delta AUC: HSA=%.2f', fit_hsa_bliss$deltaAUC_HSA),
+            legend = TRUE, plotSetup = TRUE)
+```
+
+The blue line in the above figure shows the estimates of additive effect from HSA model. Since the combination kills more than the additive effect, it suggests an trend towards synergy, quantified by delta AUC of -0.17, which is defined as the AUC of combination subtracted the AUC of additive effect.
+
+```{r, fig.height=5, fig.width=6.5, dev='png', dpi=72*10, fig.align='center', warning=FALSE}
+## plot deltaAUC_Bliss
+plotHSA_ray(fit_hsa_bliss, type=c('line', 'Bliss', 'se'),
+            main = sprintf('Delta AUC: Bliss=%.2f', fit_hsa_bliss$deltaAUC_Bliss),
+            legend = TRUE, plotSetup = TRUE)
+```
+
+Similarly, the purple line in the above figure shows the estimates of additive effect from Bliss model. Since the combination kills less than the additive effect, it suggests an trend towards antagonistic effect, quantified by delta AUC of 0.06.
+
+Notice that different definition of the baseline model for additive effect leads to different result for drug interactions. Usually, **HSA model is a less stringent criteria compared to Bliss model**.
+
+
+
+
+
+

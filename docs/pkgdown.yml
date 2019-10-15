@@ -1,0 +1,15 @@
+pandoc: 1.12.4.2
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  GUI: GUI.html
+  HSA_Bliss: HSA_Bliss.html
+  IAI: IAI.html
+  compMult_DR: compMult_DR.html
+  fit_DR_models: fit_DR_models.html
+  fit_HillEquation: fit_HillEquation.html
+  fit_NCI60: fit_NCI60.html
+  outliers: outliers.html
+  reproducibility: reproducibility.html
+  selectBestMod: selectBestMod.html
+

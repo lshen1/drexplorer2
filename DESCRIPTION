@@ -1,0 +1,38 @@
+Package: drexplorer2
+Type: Package
+Title: Dose-response Explorer2
+Version: 1.0.0
+Authors@R: person("Li", "Shen", email = "lshen7@asu.edu",
+    role = c("aut", "cre"))
+Description: There is a great variety of models developed for dose-response
+    data, many of which have been implemented in the drc and DoseFinding
+    packages. drexplorer combines both packages to aid the user to visually
+    examine and compare how existing models perform on the data. Another
+    important feature for drexplorer is to allow the user to identify outlier
+    measurements and visually examine how these outliers affect the fitted
+    model.
+URL: https://github.com/nickytong/drexplorer
+Depends:
+    R (>= 3.0.0)	
+License: GPL-3 | file LICENSE
+Imports:
+    methods,
+    DoseFinding,
+    drc,
+    fgui,
+    stringr,
+    epiR,
+	plyr,
+	scales,
+    RColorBrewer,
+    grid,
+	gridBase,
+    ggplot2,
+    foreach
+Suggests:
+    knitr,
+    rmarkdown
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr

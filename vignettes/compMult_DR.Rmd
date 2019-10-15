@@ -1,0 +1,62 @@
+---
+title: "Comparing Multiple Dose-Response Curves"
+vignette: >
+  %\VignetteIndexEntry{Comparing Multiple Dose-Response Curves}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes  
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+We provide S4 generic functions (plot and lines) for fitted model. As a result, it is easy to compare different models and graphically examine outliers through multiple dose-response curves.
+
+Outliers at significance levels 0.01 and 0.05 are indicated by different colors and symbols. Below we show the LL.3, LL.3u and sigEmax curves in this example corresponding to the three-parameter log-logistic model with lower limit 0, three-parameter log-logistic with upper limit 1 and the sigmoid Emax model.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=72*10, fig.align='center'}
+library(drexplorer2)
+data(ryegrass)
+
+fit.LL.3 <- drFit(drMat = ryegrass[, c(2, 1)],
+                  modelName = "LL.3", alpha = 0.05, fitCtr = FALSE)
+fit.LL.3u <- drFit(drMat = ryegrass[, c(2, 1)],
+                   modelName = "LL.3u", alpha = 0.05, fitCtr = FALSE)
+fit.sigEmax <- drFit(drMat = ryegrass[, c(2, 1)],
+                     modelName = "sigEmax", alpha = 0.05, fitCtr = FALSE)
+
+plot(fit.LL.3, main = '', col = 4, lwd = 2)
+lines(fit.LL.3u, col = 5, lwd = 2)
+lines(fit.sigEmax, col = 6, lwd = 2)
+legend("bottomleft", c('LL.3', 'LL.3u', 'sigEmax'), col = 4:6, lwd = 3, bty = "n")
+```
+
+With these many models fitted, which one should be preferred? One way is to look at the **Residual Standard Error (RSE)** as below. We see that the LL.3u model is best by the RSE criteria.
+
+```{r}
+sapply(list(fit.LL.3, fit.LL.3u, fit.sigEmax), function(x) x@info$RSE)
+```
+
+We also compare the curves using sigEmax model with and without outlier identification.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=72*10, fig.align='center'}
+# no outlier excluded
+fit.sigEmax0 <- drFit(drMat = ryegrass[, c(2, 1)],
+                      modelName = "sigEmax", alpha = 1, fitCtr = FALSE)
+
+plot(fit.sigEmax0, main = 'sigEmax model', col = 7, lwd = 2)
+lines(fit.sigEmax, col = 6, lwd = 2)
+legend("bottomleft", c('alpha = 0.05', 'ignored'), col = c(6, 7), lwd = 3, bty = "n")
+```
+
+
+

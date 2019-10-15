@@ -1,0 +1,73 @@
+template:
+  params:
+    docsearch:
+      api_key: fbd8d79ed49f21fc9ca7b2cf601a3f5b
+      index_name: pkgdown
+    ganalytics: UA-115082821-1
+
+reference:
+  - title: Example Datasets
+    contents:
+    - ryegrass
+    - datNCI60
+    - UMSCC22B
+    - nl22B2
+  - title: Quality Control (QC)
+    contents:
+    - NewmanTables
+    - NewmanTest
+    - drOutlier
+    - plotCCC
+  - title: Model Fit
+    contents:
+    - recommendedModels
+    - starts_with("prep", internal = TRUE)
+    - detect_ray_design
+    - starts_with("dr", internal = TRUE)
+    - starts_with("fit", internal = TRUE)
+    - fHill
+    - hillFit
+    - nci60Fit
+    - starts_with("compute", internal = TRUE)
+    - CI.delta
+    - parse_alpha
+    - starts_with("get", internal = TRUE)
+    - toget
+    - starts_with("predict", internal = TRUE)
+    - matches("dproj")
+  - title: Plot Fit Objects
+    contents:
+    - starts_with("plot", internal = TRUE)
+    - starts_with("lines", internal = TRUE)
+ 
+navbar:
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: "[QC] Outlier Identification"
+        href: articles/outliers.html
+      - text: "[QC] Assessing Reproducibility"
+        href: articles/reproducibility.html
+      - text: "[Single Drug] Fit Dose-Response Models"
+        href: articles/fit_DR_models.html
+      - text: "[Single Drug] Comparing Multiple Dose-Response Curves"
+        href: articles/compMult_DR.html
+      - text: "[Single Drug] Select the Best Model"
+        href: articles/selectBestMod.html
+      - text: "[Single Drug] Fit Hill Equation"
+        href: articles/fit_HillEquation.html
+      - text: "[Single Drug] Fit NCI60 Method"
+        href: articles/fit_NCI60.html
+      - text: "[Drug Comb] Drug Interaction Index"
+        href: articles/IAI.html  
+      - text: "[Drug Comb] Fit HSA and Bliss Model"
+        href: articles/HSA_Bliss.html
+      - text: "GUI Usage"
+        href: articles/GUI.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    news:
+      text: News
+      href: news/index.html
