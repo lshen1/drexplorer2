@@ -52,5 +52,9 @@ drexplorerGUI_2()
 ``` 
 
 ## User Manual
+<<<<<<< HEAD
 A [manual](http://htmlpreview.github.io/?https://github.com/lshen1/drexplorer2/blob/master/docs/index.html) is available.
+=======
+A [manual](http://htmlpreview.github.io/?https://github.com/lshen1/drexplorer2/blob/master/docs/index.html) is available. This is the same document as shown by typing the following command in R console.
+>>>>>>> 65bbc311b451db85a3299d2c420bd6d033ecd8c5
 
