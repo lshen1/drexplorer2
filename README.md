@@ -44,10 +44,6 @@ install_github("lshen1/drexplorer2")
 # load the package
 library(drexplorer2)
 	
-# pull out vignette: vignette does not pull out correctly if installed on Linux with non-root (R>3.0)
-# instead, check vignette at: http://htmlpreview.github.com/?https://github.com/nickytong/drexplorer/blob/master/inst/doc/drexplorer.html
-vignette('drexplorer2')
-	
 # GUI for dose-response curve fitting
 drexplorerGUI_1()
 	
@@ -55,4 +51,6 @@ drexplorerGUI_1()
 drexplorerGUI_2()
 ``` 
 
+## User Manual
+A [manual](http://htmlpreview.github.io/?https://github.com/lshen1/drexplorer2/blob/master/docs/index.html) is available.
 

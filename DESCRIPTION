@@ -11,7 +11,7 @@ Description: There is a great variety of models developed for dose-response
     important feature for drexplorer is to allow the user to identify outlier
     measurements and visually examine how these outliers affect the fitted
     model.
-URL: https://github.com/nickytong/drexplorer
+URL: https://github.com/lshen1/drexplorer2
 Depends:
     R (>= 3.0.0)	
 License: GPL-3 | file LICENSE
