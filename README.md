@@ -55,4 +55,6 @@ drexplorerGUI_1()
 drexplorerGUI_2()
 ``` 
 
+## User Manual
+A [manual](http://htmlpreview.github.io/?https://github.com/lshen1/drexplorer2/blob/master/docs/index.html) is available. This is the same document as shown by typing the following command in R console.
 
