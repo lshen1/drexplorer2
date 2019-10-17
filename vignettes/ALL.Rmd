@@ -1,0 +1,425 @@
+---
+title: "Manual"
+vignette: >
+  %\VignetteIndexEntry{Manual}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  knitr:::html_vignette:
+    toc: yes  
+---
+
+```{r ex_setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  digits = 3,
+  collapse = TRUE,
+  comment = "#>"
+  )
+options(digits = 3)
+```
+
+# [QC] Outlier Identification]
+
+This package implements the method by Newman, D. The test statistic q=w/s where w is the range of the data and s is sample standard deviation estimated from controls. The null distribution for q has been derived and 1% and 5% quantiles have been given in the paper.
+
+We implement this procedure. In particular, `NewmanTest()` returns a logic vector specifying whether the observations are outliers.
+
+Usually, drug-response data contains multiple doses. Therefore, we write a wrapper `drOutlier()` that compute the result for all doses one dose at a time.
+
+We use the *ryegrass* data from **drc** package for illustration purpose. The *ryegrass* data was originally published by [(Streibig et al. 2002)](#Streibig2002ryegrass) which contains 24 concentrations of ferulic acid (a root growth inhibitor) and corresponding root length. 
+
+First, we load the **drexplorer** package and attach the \Rpackage{ryegrass} data.
+
+```{r, message = FALSE}
+library(drexplorer2)
+
+data(ryegrass)
+dose <- ryegrass[, 2]
+response <- ryegrass[, 1]
+```
+
+At dose=3.75 and significance level 0.05, we find there is one outlier identified:
+
+```{r}
+## potential outlier at dose 3.75
+NewmanTest(ref = response[dose == 0], obs = response[dose == 3.75], alpha  =0.05)
+```
+
+We also examine all dose levels and find no further outliers:
+
+```{r}
+drOutlier(drMat = ryegrass[, c(2, 1)], alpha = 0.05)
+```
+
+# [QC] Assessing Reproducibility
+
+Sometimes replicated viability assays are performed. In such case, it is useful to examine if the experiments are reproducible.
+
+A good metric is the **Concordance Correlation Coefficient (CCC)** that captures both the location shift as well as scale shift between the replicates. The `plotCCC` function can be used to compute CCC and visualize the replicated data.
+ 
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=96*10, fig.align='center'}
+library(drexplorer2)
+
+set.seed(100)
+r1 <- runif(28)
+r2 <- r1+rnorm(28, 0, 0.1)
+ccc <- plotCCC(r1, r2,
+               xlab = 'Simulated response, replicate 1',
+               ylab = 'Simulated response, replicate 2')
+ccc
+``` 
+
+Here we have simulated two response vectors and calculate CCC. The computed CCC value is `r round(ccc['ccc'], 3)`, location shift is `r round(ccc['l_shift'], 3)`, scale shift is `r round(ccc['s_shift'], 3)`, Pearson correlation is `r round(ccc['corr'], 3)`. 
+
+# [Single Drug] Fit Dose-Response Models
+
+Below we show how to fit a dose-response model. The `drFit()` function is a wrapper to the **drc** and **DoseFinding** packages. Therefore, all models implemented by either package can be fitted. A model is specified by a _modelName_ to be passed to this function.
+
+Outliers can be identified and removed from model fitting by specifying the parameter alpha (either at significance level of 0.01 or 0.05). To disable outlier identification, set _alpha=1_.
+
+To remove controls (responses at dose=0) during model fitting, we can set _fitCtr=FALSE_.
+
+Note that the responses are scaled by mean response at dose=0 before model fitting. 
+
+Below we fit a sigmaEmax model. We set _alpha=1_ to disable outlier removal and _fitCtr=FALSE_ to exclude controls.
+
+```{r}
+library(drexplorer2)
+
+fit_sigEmax_alpha1 <- drFit(drMat = ryegrass[, c(2, 1)],
+                            modelName = "sigEmax",
+                            alpha = 1, fitCtr = FALSE)
+```
+
+The result is slightly different when outliers passing significance level of 0.05 is removed.
+
+```{r}
+fit_sigEmax_alpha_o5 <- drFit(drMat = ryegrass[, c(2, 1)],
+                              modelName = "sigEmax", 
+                              alpha = 0.05, fitCtr = FALSE)
+fit_sigEmax_alpha1@fit
+fit_sigEmax_alpha_o5@fit
+```
+
+## - Predict response
+
+One a model is fitted, it can be used to make predictions.
+
+Below we make predictions at the observed dose levels with a previously fitted model. Since the responses are scaled by mean response at dose=0 in model fitting, the predicted responses are also scaled by the mean response from controls. By default, the predict function makes predictions at observed doses.
+
+```{r}
+y <- predict(fit_sigEmax_alpha_o5)
+y
+```
+
+## - Obtain IC values
+
+We implement two approaches for IC value computation. One is to interpolate the observed dosages and try to use the dose that has the predicted response closest to the specified percentile of IC value. 
+
+The second approach is to use root finding by setting the fitted model to equal to the specified percentile. In most cases, the result are similar. However, the latter approach may give IC50 values beyond observed dosages and sometimes not robust. Further, a specified IC might be not achievable for the fitted model, in which case the returned dose is either -Inf (a flagger for percentile being too small to be achieved) or Inf (a flagger for percentile being too large to be achieved). The `computeIC()` function implements both approaches. By setting _interpolation=TRUE_ (the default value) in the `computeIC()` function, the interpolation approach will be selected.   
+
+Computing IC values at different quantiles is also easy. Similar to the `drFit()` function, different models as well as other options (alpha and fitCtr) can be specified in estimating IC value. 
+
+Below we estimate IC50 at different percentiles with the sigmoid Emax model with outlier removal (alpha=0.05) fitted previously. We see that estimates from interpolation and prediction (may be extrapolated) by the model are quite similar except for IC0 and IC100. IC100 from prediction is Inf since the fitted model cannot achieve 100% killing effect (see figure below). IC100 from interpolation is the maximum dose (30 in this case) which is a truncated estimate.
+
+Similarly, since IC0 is not achievable within the observed dose, the prediction estimate of 0.86 is smaller than the minimum dose (0.94). The predicted IC value has advantage over interpolated IC value in the sense that it is not truncated. However, since the value might be extrapolated (estimate being outside of observed dose range), the estimate is more variable. 
+
+
+```{r}
+computeIC(fit_sigEmax_alpha_o5, percent=seq(0, 1, by=0.1), log.d=FALSE, interpolation=TRUE)
+computeIC(fit_sigEmax_alpha_o5, percent=seq(0, 1, by=0.1), log.d=FALSE, interpolation=FALSE)
+```
+
+# [Single Drug] Comparing Multiple Dose-Response Curves
+
+We provide S4 generic functions (plot and lines) for fitted model. As a result, it is easy to compare different models and graphically examine outliers through multiple dose-response curves.
+
+Outliers at significance levels 0.01 and 0.05 are indicated by different colors and symbols. Below we show the LL.3, LL.3u and sigEmax curves in this example corresponding to the three-parameter log-logistic model with lower limit 0, three-parameter log-logistic with upper limit 1 and the sigmoid Emax model.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=72*10, fig.align='center'}
+library(drexplorer2)
+data(ryegrass)
+
+fit.LL.3 <- drFit(drMat = ryegrass[, c(2, 1)],
+                  modelName = "LL.3", alpha = 0.05, fitCtr = FALSE)
+fit.LL.3u <- drFit(drMat = ryegrass[, c(2, 1)],
+                   modelName = "LL.3u", alpha = 0.05, fitCtr = FALSE)
+fit.sigEmax <- drFit(drMat = ryegrass[, c(2, 1)],
+                     modelName = "sigEmax", alpha = 0.05, fitCtr = FALSE)
+
+plot(fit.LL.3, main = '', col = 4, lwd = 2)
+lines(fit.LL.3u, col = 5, lwd = 2)
+lines(fit.sigEmax, col = 6, lwd = 2)
+legend("bottomleft", c('LL.3', 'LL.3u', 'sigEmax'), col = 4:6, lwd = 3, bty = "n")
+```
+
+With these many models fitted, which one should be preferred? One way is to look at the **Residual Standard Error (RSE)** as below. We see that the LL.3u model is best by the RSE criteria.
+
+```{r}
+sapply(list(fit.LL.3, fit.LL.3u, fit.sigEmax), function(x) x@info$RSE)
+```
+
+We also compare the curves using sigEmax model with and without outlier identification.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=72*10, fig.align='center'}
+# no outlier excluded
+fit.sigEmax0 <- drFit(drMat = ryegrass[, c(2, 1)],
+                      modelName = "sigEmax", alpha = 1, fitCtr = FALSE)
+
+plot(fit.sigEmax0, main = 'sigEmax model', col = 7, lwd = 2)
+lines(fit.sigEmax, col = 6, lwd = 2)
+legend("bottomleft", c('alpha = 0.05', 'ignored'), col = c(6, 7), lwd = 3, bty = "n")
+```
+
+# [Single Drug] Select the Best Model
+
+We provide a wrapper function, `fitOneExp()`, incorporating outlier detection, fitting multiple models, selecting the best model and estimating IC values. 
+
+Users can specify multiple models from the **drc** and **DoseFinding** packages using the *models* parameter. An example is shown below.
+
+```{r, eval=TRUE}
+library(drexplorer2)
+data(ryegrass)
+
+fitExp <- fitOneExp(ryegrass[, c(2, 1)],
+                    drug = '', cellLine = '', unit = '',
+                    models=c('sigEmax', 'LL.4', 'LL.5', 'LL.3', 'LL.3u', 'logistic'),
+                    alpha = 0.05, interpolation = TRUE)
+```
+
+The fitted models can be compared through the plotOneExp function as below:
+
+```{r, warning=FALSE, fig.height=6, fig.width=6, dev='png', dpi=72*10, fig.align='center'}
+plotOneExp(fitExp, main = 'Dose-Response Curves from Multiple Models')
+
+```
+
+The best model based on Residual Standard Error (RSE) can be obtained as shown below.
+
+```{r}
+## This is the bast model:
+bM <- fitExp$bestModel
+bM
+
+## RSE from all models fitted:
+fitExp$RSEs
+
+## IC50 from all models fitted:
+fitExp$IC50
+
+## best model fitted:
+fitExp$fit[[bM]]@fit
+```
+
+# [Single Drug] Fit Hill Equation
+
+The Hill equation is a special dose-response model. Below we demonstrate how to specifically fit this model by `hillFit()` function.
+
+We first prepare standardized data where the response is scaled to between 0 and 1. A generic plot function is implemented for the fitted object.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=72*10, fig.align='center'}
+library(drexplorer2)
+data(ryegrass)
+
+## prepare standardized data
+sdat <- prepDRdat(drMat = ryegrass[, c(2, 1)],
+                  alpha = 0.01, fitCtr = FALSE, standardize = TRUE)$dat
+
+## fit Hill equation
+fit_hill <- hillFit(d = sdat$dose, y = sdat$response)
+
+plot(fit_hill)
+fit_hill[1:length(fit_hill)]
+```
+
+# [Single Drug] Fit NCI60 Method
+
+The NCI60 method deals with data that contains information for day 0 treatment. The response is between -1 and 1 and thus quite different from the previous analysis.
+
+![](../man/figures/aoc.png)
+
+Below we show how to fit models to estimate GI50, LC50, TGI, AOC_GR, AOC_LD, and AUC_GRI. Similarly, the fitted object can be visualized with a generic plot function.
+
+> Notice that the parameter estimates for GI50, LC50 and TGI are based on original drug concentration, not log10 based. On the other hand, the calculation for area under/over curve of AOC_GR, AOC_LD, and AUC_GRI are based on log10 scale.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=72*10, fig.align='center'}
+library(drexplorer2)
+data(datNCI60)
+
+fit_nci60 <- nci60Fit(d = datNCI60$Dose, y = datNCI60$Growth/100)
+
+plot(fit_nci60)
+fit_nci60[1:length(fit_nci60)]
+```
+
+# [Drug Comb] Drug Interaction Index
+
+Administering two drugs simultaneously might induce stronger effect than if administered separately. This is called synergism. Experiments to detect synergism (or antagonism which is the opposite) are usually in two forms. 
+
+One is the fixed ratio design (ray design) where the ratio of doses between two drugs is a constant. Another one is grid design which means all-possible combinations of drug doses are available. 
+
+Two papers have been published regarding to drug interaction index (IAI) by Lee et al, one in 2007 [Lee, J. J., Kong, M., Ayers, G. D., & Lotan, R. (2007)](#lee2007interaction) and one in 2009 [Lee, J. J., & Kong, M. (2009)](#lee2009confidence). IAI=1 is the case for additive effect. IAI>1 means antagonistic interaction while IAI<1 means synergistic interaction.  The Lee2007 paper described five methods to assess interaction: (1) Lowewe additivity model using interaction index (IAI) (2) Model of Greco et al 1990. This approach uses $\alpha$ as the metric and it can be related to IAI (3) Model of Machado and Robinson which uses a metric denoted as $\eta$ (4) Model of Plummer and Short which can also be linked to IAI through the parameter $\beta_4$ (5) Model of Carter et al that can be linked to IAI through the parameter $\beta_{12}$. For more details of these models, please refer to [Lee, J. J., Kong, M., Ayers, G. D., & Lotan, R. (2007)](#lee2007interaction).
+
+The two papers by Lee et al discussed the fixed ratio design and the source code for doing this is incorporated into **drexplorer2**. To work on grid design, a fixed ratio from the data needs to be selected in order to apply their method. For example, the Lee2007 paper provided an example of grid design. A fixed ratio of 1 was specified in the paper. The specification of fixed ratio would affect the fitted median effect model (see definition in [Lee, J. J., Kong, M., Ayers, G. D., & Lotan, R. (2007)](#lee2007interaction)) for the drug mixture as well as estimation of IAI. As a result, IAI has a ratio dependent interpretation. 
+
+Below we load the UMSCC22B data from [Lee, J. J., & Kong, M. (2009)](#lee2009confidence). This data has a fixed ratio design. The `fitIAI` function estimates IAI as well as its confidence interval after specifying dose1, dose2 and effect (between 0 and 1). 
+
+```{r, warning=FALSE}
+library(drexplorer2)
+data(UMSCC22B)	
+
+fit_fixedRay <- fitIAI(d1 = UMSCC22B[, 1], d2 = UMSCC22B[, 2], e = UMSCC22B[, 3],
+                       name1 = 'SCH66336', name2 = '4HPR')
+```
+
+The `plotIAI` function is then used to generate different plots including IAI versus response, IAI versus dose (predicted dose for the drug mixture, see equation (6) in [Lee, J. J., Kong, M., Ayers, G. D., & Lotan, R. (2007)](#lee2007interaction)), median effect plot and dose response curves. We can also plot IAI versus response as well as IAI versus dose in one figure by specifying mode='both'. 
+
+The median effect equation [Chou, T. C., & Talalay, P. (1984)](#chou1984quantitative) is as following:
+$$E=\frac{(d/D_{m})^m}{1+(d/D_{m})^m}$$
+
+Sometimes replicated viability assays are performed. In such case, it is useful to examine if the experiments are reproducible.
+
+A good metric is the **Concordance Correlation Coefficient (CCC)** that captures both the location shift as well as scale shift between the replicates. The `plotCCC` function can be used to compute CCC and visualize the replicated data.
+
+where E is the induced effect of a drug with dose d whose median effective dose is $D_{m}$ and $m$ is a slope parameter. 
+
+This equation can be arranged as:
+$$logit(E)=m(log d - log D_{m})$$
+
+The median effect plot shows logit(E) versus log10 dose; The dose response curve shows E versus dose. 
+Below we plot IAI against response. The 95% confidence interval of IAI is shown in dashed line. It can be seen that there is significant synergistic interaction at small relative viability value (<0.5). Although the IAI suggests antagonistic interaction at high viability values, the confidence band shows this is not statistically significant. 
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=96*5, fig.align='center'}
+## IAI versus response
+plotIAI(fit_fixedRay, type = 'IAI', mode = 'response') 
+```
+
+Similarly, we can plot IAI against dose (the sum of dosages from two drugs). The following figure shows that there is significant synergism at high dosage. 
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=96*5, fig.align='center'}
+## IAI versus dose
+plotIAI(fit_fixedRay, type = 'IAI', mode = 'dose') 
+```
+
+The median effect plot is shown below. 
+```{r, fig.height=5, fig.width=5, dev='png', dpi=96*10, fig.align='center'}
+## median effect
+plotIAI(fit_fixedRay, type = 'medianEffect') 
+```
+
+In [Lee, J. J., Kong, M., Ayers, G. D., & Lotan, R. (2007)](#lee2007interaction), there is an example data (nl22B2) using grid design. Here we examine the estimate of IAI at different fixed ratios.
+
+```{r, warning=FALSE}
+data(nl22B2)
+
+fit_allPoss_1 <- fitIAI(d1 = nl22B2$schd, d2 = nl22B2$hpr, e = nl22B2$y1,
+                        name1 = 'SCH66336', name2 = '4HPR', d2.d1.force = 1)
+fit_allPoss_2 <- fitIAI(d1 = nl22B2$schd, d2 = nl22B2$hpr, e = nl22B2$y1,
+                        name1 = 'SCH66336', name2 = '4HPR', d2.d1.force = 2)
+```
+
+From the median effect plot, we can find that there are 4 data points for drug mixtures at fixed ratio of 1 while only 2 data points
+are available at fixed ratio of 2.
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=96*5, fig.align='center'}
+plotIAI(fit_allPoss_1, type = 'medianEffect') 
+```
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=96*5, fig.align='center'}
+plotIAI(fit_allPoss_2, type = 'medianEffect') 
+```
+
+Below we compare IAI estimated from the two scenarios. 
+
+```{r, fig.height=5, fig.width=5, dev='png', dpi=96*5, fig.align='center'}
+plotCCC(fit_allPoss_1$CI$IAI, fit_allPoss_2$CI$IAI)
+```
+
+
+## - Drug Interaction Index With Model Selection
+
+The original Chou-Talalay interaction index approach uses median-effect equation to model drug combination data. This method assumes idealized log-linearity which usually does not hold on real data. Here built upon the drexplorer package which automatically selects the best model without constraining to log-linear model, we try to overcome this limitation by extending the interaction index approach to non-linear functions. Using the UMSCC22B data as an example below. We first fit the model and then plot the IAI estimates.
+
+```{r, warning=FALSE, fig.height=10, fig.width=10, dev='png', dpi=96*5, fig.align='center'}
+fitL_mod <- fitIAI_mod(d1 = UMSCC22B[, 1], d2 = UMSCC22B[, 2], e = UMSCC22B[, 3],
+                       name1 = 'SCH66336', name2 = '4HPR', ratio = 1)
+
+plotIAI_mod(fitL_mod, mixtureDose = c('A+B'))
+```
+
+Compared to the original Chou-Talalay method, we now observed the dose-response curves fit better to the data and thus IAI estimates from this approach are more reliable. Since some response values are not achieved in the data, it is hard to extrapolate what dose would achieve those responses. This makes the estimation of IAI unavailable in some regions. Thus, this new approach is more conservative compared to the original Chou-Talalay method.
+
+
+# [Drug Comb] Fit HSA and Bliss Model
+
+Below we illustrate the application of HSA (Highest Single Agent) model and Bliss independence model. Both models first estimate the reference response of combination treatment (assumed to be theoretical additive effect) and then compare the observed response to the reference response for combination treatment. We compute the Area Under Curve (AUC) for the observed response and reference response and use their difference deltaAUC (AUC of observed response - AUC of reference response) to quantify the trend of synergism.
+
+In terms of showing the curves of single and combination treatment, we use the projected dose which is
+$$d_{proj}=\sqrt{(d1^2 + d2^2)}$$
+
+Based on the $d_{proj}$ dose of combination treatment, one can infer the corresponding dose of drug 1 (d1) and drug 2 (d2). That is, there is 1-to-1 correspondence among the 3 doses.
+
+```{r, fig.height=5, fig.width=6.5, dev='png', dpi=72*10, fig.align='center', warning=FALSE}
+library(drexplorer2)
+data(UMSCC22B)
+
+## fit HSA_Bliss model
+fit_hsa_bliss <- fitHSA_ray(d1 = UMSCC22B$dose1, d2 = UMSCC22B$dose2, e = UMSCC22B$e,
+                            name1 = 'SCH66336', name2 = '4HPR', islogd = FALSE)
+
+## plot deltaAUC_HSA
+plotHSA_ray(fit_hsa_bliss, type = c('line', 'HSA', 'se'),
+            main = sprintf('Delta AUC: HSA=%.2f', fit_hsa_bliss$deltaAUC_HSA),
+            legend = TRUE, plotSetup = TRUE)
+```
+
+The blue line in the above figure shows the estimates of additive effect from HSA model. Since the combination kills more than the additive effect, it suggests an trend towards synergy, quantified by delta AUC of -0.17, which is defined as the AUC of combination subtracted the AUC of additive effect.
+
+```{r, fig.height=5, fig.width=6.5, dev='png', dpi=72*10, fig.align='center', warning=FALSE}
+## plot deltaAUC_Bliss
+plotHSA_ray(fit_hsa_bliss, type=c('line', 'Bliss', 'se'),
+            main = sprintf('Delta AUC: Bliss=%.2f', fit_hsa_bliss$deltaAUC_Bliss),
+            legend = TRUE, plotSetup = TRUE)
+```
+
+Similarly, the purple line in the above figure shows the estimates of additive effect from Bliss model. Since the combination kills less than the additive effect, it suggests an trend towards antagonistic effect, quantified by delta AUC of 0.06.
+
+Notice that different definition of the baseline model for additive effect leads to different result for drug interactions. Usually, **HSA model is a less stringent criteria compared to Bliss model**.
+
+# [GUI Usage]
+
+GUI interface has been shipped with **drexplorer2** which is built upon the \Rpackage{fgui}. After loading the **drexplorer2** package, typing 
+
+* **_drexplorerGUI\_1()_**
+
+in the R console will bring out the GUI for fitting dose-response curves. 
+
+This GUI assumes input file in comma-separated format or tab-delimited format. The first column is assumed to be dose and the second column is assumed to be response. An optional header can be provided in the first row. Users can click the "Use example data" button for an example run using the  *ryegrass* data. Result files will be saved in a folder called **drexplorer_results** at the working directory of R session including:  
+
+* DoseResponseCurve.pdf: the fitted dose response curve.
+* ICtable.csv: estimated IC (inhibitory concentration) values at different percentiles.
+* ICtable.csv: outlier status for each data point.
+
+Notice that example input file called _ryegrass.csv_ will be dumped into the result folder if example data is used. 
+
+Similarly,  typing 
+
+* **_drexplorerGUI\_2()_**
+
+will bring out the GUI for drug-drug interaction analysis. 
+
+Users can run the UMSCC22B data set or the nl22B2 data set by clicking the "Use UMSCC22B data" or the "Use nl22B2 data" buttons. Example input files (UMSCC22B.csv and nl22B2.csv) will be dumped into the result folder **drexplorer_results** after the example run. Similar to the previous GUI, input file can be either a comma-separated file or tab-delimited file. Three columns are needed to run this GUI: 
+
+- The first column is assumed to be the dose of drug 1. 
+- The second column is assumed to be the dose of drug 2. 
+- The last column is assumed to be response under drug combinations. 
+
+A multi-page pdf file will be generated to save various plots (e.g. IAIplot_for_nl22B2.pdf). A comma-separated file will be generated to save estimates of IAI as well as 95% confidence interval (e.g. IAI_CI_nl22B2.csv).
+
+
+
+
+
+

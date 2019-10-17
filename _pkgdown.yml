@@ -44,27 +44,28 @@ navbar:
   components:
     articles:
       text: Articles
-      menu:
-      - text: "[QC] Outlier Identification"
-        href: articles/outliers.html
-      - text: "[QC] Assessing Reproducibility"
-        href: articles/reproducibility.html
-      - text: "[Single Drug] Fit Dose-Response Models"
-        href: articles/fit_DR_models.html
-      - text: "[Single Drug] Comparing Multiple Dose-Response Curves"
-        href: articles/compMult_DR.html
-      - text: "[Single Drug] Select the Best Model"
-        href: articles/selectBestMod.html
-      - text: "[Single Drug] Fit Hill Equation"
-        href: articles/fit_HillEquation.html
-      - text: "[Single Drug] Fit NCI60 Method"
-        href: articles/fit_NCI60.html
-      - text: "[Drug Comb] Drug Interaction Index"
-        href: articles/IAI.html  
-      - text: "[Drug Comb] Fit HSA and Bliss Model"
-        href: articles/HSA_Bliss.html
-      - text: "GUI Usage"
-        href: articles/GUI.html
+      href: articles/ALL.html
+      # menu:
+      # - text: "[QC] Outlier Identification"
+        # href: articles/outliers.html
+      # - text: "[QC] Assessing Reproducibility"
+        # href: articles/reproducibility.html
+      # - text: "[Single Drug] Fit Dose-Response Models"
+        # href: articles/fit_DR_models.html
+      # - text: "[Single Drug] Comparing Multiple Dose-Response Curves"
+        # href: articles/compMult_DR.html
+      # - text: "[Single Drug] Select the Best Model"
+        # href: articles/selectBestMod.html
+      # - text: "[Single Drug] Fit Hill Equation"
+        # href: articles/fit_HillEquation.html
+      # - text: "[Single Drug] Fit NCI60 Method"
+        # href: articles/fit_NCI60.html
+      # - text: "[Drug Comb] Drug Interaction Index"
+        # href: articles/IAI.html  
+      # - text: "[Drug Comb] Fit HSA and Bliss Model"
+        # href: articles/HSA_Bliss.html
+      # - text: "GUI Usage"
+        # href: articles/GUI.html
     reference:
       text: Reference
       href: reference/index.html
