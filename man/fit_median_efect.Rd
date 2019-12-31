@@ -4,8 +4,15 @@
 \alias{fit_median_efect}
 \title{Fit median-effect model for 2-drug combination with a fixed ratio desgin}
 \usage{
-fit_median_efect(d1, d2, e, name1 = "Drug A", name2 = "Drug B", d2.d1,
-  base = exp(1))
+fit_median_efect(
+  d1,
+  d2,
+  e,
+  name1 = "Drug A",
+  name2 = "Drug B",
+  d2.d1,
+  base = exp(1)
+)
 }
 \arguments{
 \item{d1}{dose for drug 1.}

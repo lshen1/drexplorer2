@@ -94,7 +94,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">drexplorer2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -152,11 +152,23 @@
  computed ICx values however, can be in either log10 scale or the original scale.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fitOneExp</span>(<span class='no'>dat</span>, <span class='kw'>drug</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>cellLine</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+    <pre class="usage"><span class='fu'>fitOneExp</span>(
+  <span class='no'>dat</span>,
+  <span class='kw'>drug</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>cellLine</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>unit</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
   <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"LL.3"</span>, <span class='st'>"LL.3u"</span>, <span class='st'>"sigEmax"</span>, <span class='st'>"logistic"</span>, <span class='st'>"linlog"</span>),
-  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>log.d</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>),
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>fitCtr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>standardize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>interpolation</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>transparency</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>log.d</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>percentile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>),
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
+  <span class='kw'>fitCtr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>standardize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>interpolation</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>transparency</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

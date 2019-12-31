@@ -4,12 +4,32 @@
 \alias{plotOneExp}
 \title{plot dose response curve from fitOneExp() result}
 \usage{
-plotOneExp(fitRes, ind2plot = NA, cols = NA, pcols = NA,
-  type = "plot", style = "full", h = NULL, tag = NA, main = NA,
-  cex.main = 1, xlab = NA, ylab = NA, ylim = NA, xlim = NA,
-  show = "both", cexLegend = NA, posLegend = "bottomleft",
-  showTopN = NA, lwd = 2, lty = 1, cex.axis = 1, cex.lab = 1,
-  addOutlierLegend = TRUE, axes = TRUE)
+plotOneExp(
+  fitRes,
+  ind2plot = NA,
+  cols = NA,
+  pcols = NA,
+  type = "plot",
+  style = "full",
+  h = NULL,
+  tag = NA,
+  main = NA,
+  cex.main = 1,
+  xlab = NA,
+  ylab = NA,
+  ylim = NA,
+  xlim = NA,
+  show = "both",
+  cexLegend = NA,
+  posLegend = "bottomleft",
+  showTopN = NA,
+  lwd = 2,
+  lty = 1,
+  cex.axis = 1,
+  cex.lab = 1,
+  addOutlierLegend = TRUE,
+  axes = TRUE
+)
 }
 \arguments{
 \item{fitRes}{return value from fitOneExp().}

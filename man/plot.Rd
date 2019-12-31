@@ -7,16 +7,42 @@
 \alias{plot,nci60Fit}
 \title{plot method for hillFit class}
 \usage{
-\method{plot}{hillFit}(fit, xlab = "Log10(Dose)",
-  ylab = "Relative viability", xlim = NULL, ylim = NULL,
-  main = "Fit of Hill equation", cex.main = 1, cex.axis = 1,
-  pcol = "black", lcol = "black", lwd = 2, ...)
+\method{plot}{hillFit}(
+  fit,
+  xlab = "Log10(Dose)",
+  ylab = "Relative viability",
+  xlim = NULL,
+  ylim = NULL,
+  main = "Fit of Hill equation",
+  cex.main = 1,
+  cex.axis = 1,
+  pcol = "black",
+  lcol = "black",
+  lwd = 2,
+  ...
+)
 
-\method{plot}{nci60Fit}(fit, xlab = "Dose", ylab = "Relative growth",
-  main = "Fit of NCI60 method", xlim = NULL, ylim = NULL,
-  cex.main = 1, cex.axis = 1, cex.lab = 1, axes = TRUE,
-  pcol = "black", pch = 1, lcol = "black", lty = 1, ltyh = 1,
-  lwd = 2, type = c("line", "points"), h = c(-0.5, 0, 0.5), ...)
+\method{plot}{nci60Fit}(
+  fit,
+  xlab = "Dose",
+  ylab = "Relative growth",
+  main = "Fit of NCI60 method",
+  xlim = NULL,
+  ylim = NULL,
+  cex.main = 1,
+  cex.axis = 1,
+  cex.lab = 1,
+  axes = TRUE,
+  pcol = "black",
+  pch = 1,
+  lcol = "black",
+  lty = 1,
+  ltyh = 1,
+  lwd = 2,
+  type = c("line", "points"),
+  h = c(-0.5, 0, 0.5),
+  ...
+)
 }
 \arguments{
 \item{fit}{a hillFit object as returned by hillFit.}

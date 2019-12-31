@@ -4,11 +4,23 @@
 \alias{fitOneExp}
 \title{Fit multiple dose response models for a single drug in a single cell line (One experiement unit)}
 \usage{
-fitOneExp(dat, drug = NA, cellLine = NA, unit = NA,
+fitOneExp(
+  dat,
+  drug = NA,
+  cellLine = NA,
+  unit = NA,
   models = c("LL.3", "LL.3u", "sigEmax", "logistic", "linlog"),
-  cols = NA, log.d = TRUE, percentile = seq(0.1, 0.9, by = 0.1),
-  alpha = 0.01, fitCtr = FALSE, standardize = TRUE,
-  interpolation = TRUE, plot = FALSE, transparency = 1, ...)
+  cols = NA,
+  log.d = TRUE,
+  percentile = seq(0.1, 0.9, by = 0.1),
+  alpha = 0.01,
+  fitCtr = FALSE,
+  standardize = TRUE,
+  interpolation = TRUE,
+  plot = FALSE,
+  transparency = 1,
+  ...
+)
 }
 \arguments{
 \item{dat}{a 2-column data frame with first column as dose and second column response.

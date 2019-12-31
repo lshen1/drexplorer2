@@ -4,8 +4,16 @@
 \alias{computeIC}
 \title{This function uses rootfinding with fitted curve to compute IC values.}
 \usage{
-computeIC(drFit, percent = 0.5, log.d = TRUE, interpolation = TRUE,
-  stepLen = NA, lower, upper, ...)
+computeIC(
+  drFit,
+  percent = 0.5,
+  log.d = TRUE,
+  interpolation = TRUE,
+  stepLen = NA,
+  lower,
+  upper,
+  ...
+)
 }
 \arguments{
 \item{drFit}{A drFit object as returned by drFit() function.}

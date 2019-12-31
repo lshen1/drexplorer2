@@ -5,8 +5,19 @@
 \title{Estimate the interaction index as well as its confidence interval using delta method for
  fixed ratio design}
 \usage{
-CI.delta(d1, e1, d2, e2, d12, e12, d2.d1, E, alpha = 0.05, min = 0.02,
-  max = 0.98)
+CI.delta(
+  d1,
+  e1,
+  d2,
+  e2,
+  d12,
+  e12,
+  d2.d1,
+  E,
+  alpha = 0.05,
+  min = 0.02,
+  max = 0.98
+)
 }
 \arguments{
 \item{d1}{dose for drug 1 where drug 2 has dose equal to 0.}

@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">drexplorer2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -149,12 +149,12 @@ fit_sigEmax_alpha_o5@fit
 <p>Below we make predictions at the observed dose levels with a previously fitted model. Since the responses are scaled by mean response at dose=0 in model fitting, the predicted responses are also scaled by the mean response from controls. By default, the predict function makes predictions at observed doses.</p>
 <pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw"><a href="../reference/predict-methods.html">predict</a></span>(fit_sigEmax_alpha_o5)
 y
-<span class="co">#&gt;      1      2      3      4      5      6      7      8      9     10 </span>
-<span class="co">#&gt; 1.0174 1.0174 1.0174 1.0174 1.0174 1.0174 0.9942 0.9942 0.9942 0.8205 </span>
-<span class="co">#&gt;     11     12     13     14     15     16     17     18     19     20 </span>
-<span class="co">#&gt; 0.8205 0.8205 0.3262 0.3262 0.3262 0.1045 0.1045 0.1045 0.0756 0.0756 </span>
-<span class="co">#&gt;     21     22     23     24 </span>
-<span class="co">#&gt; 0.0756 0.0727 0.0727 0.0727</span></code></pre>
+<span class="co">#&gt;      1      2      3      4      5      6      7      8      9     10     11 </span>
+<span class="co">#&gt; 1.0174 1.0174 1.0174 1.0174 1.0174 1.0174 0.9942 0.9942 0.9942 0.8205 0.8205 </span>
+<span class="co">#&gt;     12     13     14     15     16     17     18     19     20     21     22 </span>
+<span class="co">#&gt; 0.8205 0.3262 0.3262 0.3262 0.1045 0.1045 0.1045 0.0756 0.0756 0.0756 0.0727 </span>
+<span class="co">#&gt;     23     24 </span>
+<span class="co">#&gt; 0.0727 0.0727</span></code></pre>
 </div>
 <div id="obtain-ic-values" class="section level2">
 <h2 class="hasAnchor">

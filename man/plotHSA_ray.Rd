@@ -4,10 +4,22 @@
 \alias{plotHSA_ray}
 \title{plot the ray design from fit object returned by fitHSA_ray}
 \usage{
-plotHSA_ray(fit, cols = c(1, 2, 3), lwds = 3, xlim = NULL,
-  ylim = NULL, xlab = NULL, ylab = "Relative viability",
-  main = NULL, tag = NULL, type = c("line", "HSA", "Bliss", "se"),
-  legend = TRUE, legend.cex = 0.6, plotSetup = TRUE, digit = 3)
+plotHSA_ray(
+  fit,
+  cols = c(1, 2, 3),
+  lwds = 3,
+  xlim = NULL,
+  ylim = NULL,
+  xlab = NULL,
+  ylab = "Relative viability",
+  main = NULL,
+  tag = NULL,
+  type = c("line", "HSA", "Bliss", "se"),
+  legend = TRUE,
+  legend.cex = 0.6,
+  plotSetup = TRUE,
+  digit = 3
+)
 }
 \arguments{
 \item{fit}{the fitted result from fitHSA_ray().}

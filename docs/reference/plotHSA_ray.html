@@ -93,7 +93,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">drexplorer2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -150,10 +150,22 @@
     <p>plot the ray design from fit object returned by fitHSA_ray</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotHSA_ray</span>(<span class='no'>fit</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>lwds</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Relative viability"</span>,
-  <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"line"</span>, <span class='st'>"HSA"</span>, <span class='st'>"Bliss"</span>, <span class='st'>"se"</span>),
-  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend.cex</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>plotSetup</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>digit</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
+    <pre class="usage"><span class='fu'>plotHSA_ray</span>(
+  <span class='no'>fit</span>,
+  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>),
+  <span class='kw'>lwds</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Relative viability"</span>,
+  <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"line"</span>, <span class='st'>"HSA"</span>, <span class='st'>"Bliss"</span>, <span class='st'>"se"</span>),
+  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>legend.cex</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
+  <span class='kw'>plotSetup</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>digit</span> <span class='kw'>=</span> <span class='fl'>3</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

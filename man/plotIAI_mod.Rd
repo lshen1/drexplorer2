@@ -4,8 +4,7 @@
 \alias{plotIAI_mod}
 \title{Plot for the fitted object from model selection}
 \usage{
-plotIAI_mod(fitL, plotFA = F, mixtureDose = c("DualAxisA"),
-  ylim = c(0, 1.2))
+plotIAI_mod(fitL, plotFA = F, mixtureDose = c("DualAxisA"), ylim = c(0, 1.2))
 }
 \arguments{
 \item{fitL}{the fitted result from fitIAI_mod().}

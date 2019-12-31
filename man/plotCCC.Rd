@@ -4,10 +4,24 @@
 \alias{plotCCC}
 \title{Calculates Concordance Correlation Coefficient (CCC) to access reproducibility}
 \usage{
-plotCCC(x, y, xlab = NA, ylab = NA, tag = "", col_legend = "red",
-  pch = 1, main = NA, cex = 2, plot = TRUE, ylim = NA,
-  xlim = NA, maskBeyondLim = FALSE, plotOutlier = FALSE,
-  sampleName = NA, alpha_outlier = 0.01)
+plotCCC(
+  x,
+  y,
+  xlab = NA,
+  ylab = NA,
+  tag = "",
+  col_legend = "red",
+  pch = 1,
+  main = NA,
+  cex = 2,
+  plot = TRUE,
+  ylim = NA,
+  xlim = NA,
+  maskBeyondLim = FALSE,
+  plotOutlier = FALSE,
+  sampleName = NA,
+  alpha_outlier = 0.01
+)
 }
 \arguments{
 \item{x}{x vector.}

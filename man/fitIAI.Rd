@@ -5,8 +5,17 @@
 \title{Estimate the interaction index as well as its confidence interval using delta method
  for fixed ratio design}
 \usage{
-fitIAI(d1, d2, e, E = seq(0.05, 0.95, 0.005), name1 = "Drug A",
-  name2 = "Drug B", alpha = 0.05, d2.d1.force = NA, tol = 0.01)
+fitIAI(
+  d1,
+  d2,
+  e,
+  E = seq(0.05, 0.95, 0.005),
+  name1 = "Drug A",
+  name2 = "Drug B",
+  alpha = 0.05,
+  d2.d1.force = NA,
+  tol = 0.01
+)
 }
 \arguments{
 \item{d1}{dose for drug 1.}
@@ -51,7 +60,7 @@ The Lee2009 paper provided generalization of IAI to multiple drugs using Lowewe 
  model and assumption of Chou and Talalay's median effect equation. The Chou and Talalay's
  median effect equation can be expressed as: 
  \deqn{log(E/(1-E))=m(log d - log Dm)}{log(E/(1-E))=m(log d - log Dm)} 
- where E is the effect at dose d for a compound whose median effective dose.
+ where E is the effect at dose d for a compound whose median effective dose. 
 
 Some notes about experiment design. Usually the data is either fixed ratio design (ray design)
  or grid design which means all-possible combination of drug concentrations between two drugs

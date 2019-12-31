@@ -7,11 +7,25 @@
 \alias{lines,nci60Fit}
 \title{lines method for hillFit class}
 \usage{
-\method{lines}{hillFit}(fit, col = 1, lwd = 2, show_points = FALSE,
-  pcol = "black", pch = 16, ...)
+\method{lines}{hillFit}(
+  fit,
+  col = 1,
+  lwd = 2,
+  show_points = FALSE,
+  pcol = "black",
+  pch = 16,
+  ...
+)
 
-\method{lines}{nci60Fit}(fit, pcol = "black", lcol = "black",
-  lwd = 2, lty = 1, pch = 16, type = c("line"))
+\method{lines}{nci60Fit}(
+  fit,
+  pcol = "black",
+  lcol = "black",
+  lwd = 2,
+  lty = 1,
+  pch = 16,
+  type = c("line")
+)
 }
 \arguments{
 \item{fit}{a hillFit object as returned by hillFit.}

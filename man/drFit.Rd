@@ -4,8 +4,13 @@
 \alias{drFit}
 \title{This is a wrapper to fit dose response models from drc and DoseFinding packages.}
 \usage{
-drFit(drMat, modelName = "sigEmax", alpha = 0.01, fitCtr = FALSE,
-  standardize = TRUE)
+drFit(
+  drMat,
+  modelName = "sigEmax",
+  alpha = 0.01,
+  fitCtr = FALSE,
+  standardize = TRUE
+)
 }
 \arguments{
 \item{drMat}{dose-response matrix. the first column being dosage and second column being response.

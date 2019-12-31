@@ -4,8 +4,15 @@
 \alias{fitIAI_mod0}
 \title{Re-implemented IAI calculation with model selection and CI}
 \usage{
-fitIAI_mod0(d1, d2, e, E = seq(0.05, 0.95, 0.005), name1 = "Drug A",
-  name2 = "Drug B", ratio)
+fitIAI_mod0(
+  d1,
+  d2,
+  e,
+  E = seq(0.05, 0.95, 0.005),
+  name1 = "Drug A",
+  name2 = "Drug B",
+  ratio
+)
 }
 \arguments{
 \item{d1}{dose for drug 1.}

@@ -4,10 +4,16 @@
 \alias{plot_median_effect}
 \title{Generate plot for the fit from median-effect model}
 \usage{
-plot_median_effect(medianEffect, type = c("medianEffect",
-  "doseResponseCurve", "contour"), contour.level = (1:9)/10,
-  logd = FALSE, cex.legend = 1, align = TRUE, ylim = c(0, 1),
-  legend.position = "topright")
+plot_median_effect(
+  medianEffect,
+  type = c("medianEffect", "doseResponseCurve", "contour"),
+  contour.level = (1:9)/10,
+  logd = FALSE,
+  cex.legend = 1,
+  align = TRUE,
+  ylim = c(0, 1),
+  legend.position = "topright"
+)
 }
 \arguments{
 \item{medianEffect}{the fitted result by fit_median_efect().}

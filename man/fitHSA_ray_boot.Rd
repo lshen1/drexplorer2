@@ -4,9 +4,21 @@
 \alias{fitHSA_ray_boot}
 \title{bootstrap of fitHSA_ray to obtain variation of deltaAUC}
 \usage{
-fitHSA_ray_boot(d1, d2, e, tol = 0.05, strict = TRUE,
-  name1 = "Drug A", name2 = "Drug B", dmin = NULL, dmax = NULL,
-  islogd = TRUE, bootstrapB = 10, nrep = 3, seed = 100)
+fitHSA_ray_boot(
+  d1,
+  d2,
+  e,
+  tol = 0.05,
+  strict = TRUE,
+  name1 = "Drug A",
+  name2 = "Drug B",
+  dmin = NULL,
+  dmax = NULL,
+  islogd = TRUE,
+  bootstrapB = 10,
+  nrep = 3,
+  seed = 100
+)
 }
 \arguments{
 \item{d1}{drug 1 dose in original scale.}

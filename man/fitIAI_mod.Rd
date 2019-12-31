@@ -4,8 +4,17 @@
 \alias{fitIAI_mod}
 \title{Re-implemented IAI calculation with model selection and CI}
 \usage{
-fitIAI_mod(d1, d2, e, E = seq(0.05, 0.95, 0.005), name1 = "Drug A",
-  name2 = "Drug B", ratio, tol = 0.1, IAIactive = 0.95)
+fitIAI_mod(
+  d1,
+  d2,
+  e,
+  E = seq(0.05, 0.95, 0.005),
+  name1 = "Drug A",
+  name2 = "Drug B",
+  ratio,
+  tol = 0.1,
+  IAIactive = 0.95
+)
 }
 \arguments{
 \item{d1}{dose for drug 1.}

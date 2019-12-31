@@ -4,9 +4,21 @@
 \alias{fitHSA_ray}
 \title{Fit HSA and Bliss model given a fixed ratio design with input (d1, d2, e)}
 \usage{
-fitHSA_ray(d1, d2, e, tol = 0.05, strict = TRUE, name1 = "Drug A",
-  name2 = "Drug B", dmin = NULL, dmax = NULL, islogd = TRUE,
-  bootstrapB = 0, nrep = 3, seed = 100)
+fitHSA_ray(
+  d1,
+  d2,
+  e,
+  tol = 0.05,
+  strict = TRUE,
+  name1 = "Drug A",
+  name2 = "Drug B",
+  dmin = NULL,
+  dmax = NULL,
+  islogd = TRUE,
+  bootstrapB = 0,
+  nrep = 3,
+  seed = 100
+)
 }
 \arguments{
 \item{d1}{drug 1 dose in original scale.}

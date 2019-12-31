@@ -26,7 +26,7 @@ Given measurements from controls (no drug treated), we can compute the sample
  standard deviation (s). The range of responses from treated samples (w) can be computed
  for a given dose level. Assuming the controls to have the same variation as the drug treated case, 
  the distribution of ratio statistic q=w/s can be derived and used to calculate if there is
- outliers in the treated responses as described by D. Newman, Biometrika, 1939.
+ outliers in the treated responses as described by D. Newman, Biometrika, 1939.  
 
 Note that this function works for a single dose level. When multiple dose levels exist,
  one need to repeatedly call this function to identify outliers at each dose level or use the
