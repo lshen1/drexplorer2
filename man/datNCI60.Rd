@@ -4,7 +4,9 @@
 \name{datNCI60}
 \alias{datNCI60}
 \title{Example raw data for calculating GI50, TGI and LC50}
-\format{An object of class \code{data.frame} with 12 rows and 2 columns.}
+\format{
+An object of class \code{data.frame} with 12 rows and 2 columns.
+}
 \usage{
 datNCI60
 }

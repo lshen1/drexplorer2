@@ -6,7 +6,9 @@
 \title{The drug combination data of squamous cell carcinoma cells (UMSCC22B) surviving after 72 hours
  of treatment by single and combination dose levels of SCH66336 and 4-HPR. This is a fixed-ratio
  design.}
-\format{A data frame with 13 rows and 3 columns}
+\format{
+A data frame with 13 rows and 3 columns
+}
 \source{
 \url{https://biostatistics.mdanderson.org/SoftwareDownload/}
 }

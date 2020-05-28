@@ -4,7 +4,9 @@
 \name{ryegrass}
 \alias{ryegrass}
 \title{ryegrass dataset from drc package}
-\format{An object of class \code{data.frame} with 24 rows and 2 columns.}
+\format{
+An object of class \code{data.frame} with 24 rows and 2 columns.
+}
 \usage{
 ryegrass
 }

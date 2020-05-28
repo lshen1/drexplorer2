@@ -4,7 +4,9 @@
 \name{nl22B2}
 \alias{nl22B2}
 \title{The drug combination data between SCH66336 and 4-HPR. This is an all-possible combination design.}
-\format{A data frame with 30 rows and 3 columns}
+\format{
+A data frame with 30 rows and 3 columns
+}
 \source{
 \url{https://biostatistics.mdanderson.org/SoftwareDownload/}
 }

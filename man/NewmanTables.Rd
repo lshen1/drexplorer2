@@ -5,8 +5,10 @@
 \alias{onePercentTab}
 \alias{fivePercentTab}
 \title{Table III and IV published by Newman}
-\format{Each of the two objects (onePercentTab, fivePercentTab)
-is a matrix with 20 rows (degree of freedom f) and 12 columns (sample size n).}
+\format{
+Each of the two objects (onePercentTab, fivePercentTab)
+is a matrix with 20 rows (degree of freedom f) and 12 columns (sample size n).
+}
 \description{
 This dataset contains two 20-by-12 matrices corresponding to table III and table IV published
  by Newman, D. In particular, onePercentTab gives the quantiles at significance level of 0.01

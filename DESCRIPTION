@@ -1,7 +1,7 @@
 Package: drexplorer2
 Type: Package
 Title: Dose-response Explorer2
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: person("Li", "Shen", email = "lshen7@asu.edu",
     role = c("aut", "cre"))
 Description: There is a great variety of models developed for dose-response
@@ -34,5 +34,5 @@ Suggests:
     rmarkdown
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
